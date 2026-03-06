@@ -1,0 +1,102 @@
+basePath: /
+consumes:
+- application/json
+definitions:
+  httputil.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  httputil.FilmCreateRequest:
+    properties:
+      length:
+        type: integer
+      name:
+        type: string
+      release_date:
+        type: string
+    type: object
+  httputil.FilmCreateResponse:
+    properties:
+      new_id:
+        type: integer
+    type: object
+  httputil.GetFilmByIdResponse:
+    properties:
+      id:
+        type: integer
+      length:
+        type: integer
+      name:
+        type: string
+      release_date:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  license:
+    name: Apache 2.0
+  title: films list & test microservices
+  version: "1.0"
+paths:
+  /films:
+    post:
+      description: Create film
+      parameters:
+      - description: create film body
+        in: body
+        name: subscription
+        required: true
+        schema:
+          $ref: '#/definitions/httputil.FilmCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: created film id
+          schema:
+            $ref: '#/definitions/httputil.FilmCreateResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorResponse'
+      summary: Create film
+      tags:
+      - films
+  /films/{id}:
+    get:
+      description: Get film by id
+      parameters:
+      - description: film id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/httputil.GetFilmByIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/httputil.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.ErrorResponse'
+      summary: Get film
+      tags:
+      - films
+produces:
+- application/json
+swagger: "2.0"
