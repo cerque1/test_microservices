@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"service-1/internal/entities"
+	"service-1/internal/usecases"
 	"time"
 
 	filmsv1 "github.com/cerque1/films_protos/gen"
@@ -15,21 +16,10 @@ import (
 
 type serverApi struct {
 	filmsv1.UnimplementedService1Server
-	films Films
+	films usecases.FilmsUC
 }
 
-type Films interface {
-	Create(
-		ctx context.Context,
-		film entities.Film,
-	) (newId int, err error)
-	GetById(
-		ctx context.Context,
-		id int,
-	) (film entities.Film, err error)
-}
-
-func Register(gRPCServer *grpc.Server, films Films) {
+func Register(gRPCServer *grpc.Server, films usecases.FilmsUC) {
 	filmsv1.RegisterService1Server(gRPCServer, &serverApi{films: films})
 }
 
